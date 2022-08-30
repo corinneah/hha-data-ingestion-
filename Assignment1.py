@@ -1,5 +1,6 @@
 # SECTION 1 
 # import packages
+from unittest import result
 import pandas as pd
 import xlrd
 # Downloaded xls dataset with two+ tabs
@@ -25,4 +26,14 @@ data=data.json()
 #import packages
 from google.cloud import bigquery
 # connect variable to key 
-client = bigquery.client.from_service_account_json('adroit-producer-361019-747cf9ceb67a.json')
+client = bigquery.Client.from_service_account_json('/Users/corinne/Documents/Github/hha-data-ingestion-/adroit-producer-361019-747cf9ceb67a.json')
+# query public dataset 1 
+query_job = client.query("SELECT * FROM `bigquery-public-data.google_ads.geotargets` LIMIT 100")
+# For results 
+results = query_job.result()
+bigquery1 = pd.DataFrame(results.to_dataframe())
+# query public dataset 2 
+client = bigquery.Client.from_service_account_json('/Users/corinne/Documents/Github/hha-data-ingestion-/adroit-producer-361019-747cf9ceb67a.json')
+query_job = client.query("SELECT * FROM `bigquery-public-data.austin_waste.waste_and_diversion` LIMIT 100")
+results = query_job.result()
+bigquery2 = pd.DataFrame(results.to_dataframe())
